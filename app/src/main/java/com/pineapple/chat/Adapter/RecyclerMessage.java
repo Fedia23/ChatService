@@ -30,6 +30,11 @@ public class RecyclerMessage extends RecyclerView.Adapter<RecyclerMessage.ViewHo
     }
 
     @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(messageList.get(position).getName());
         holder.textMessage.setText(messageList.get(position).getText());
@@ -37,7 +42,10 @@ public class RecyclerMessage extends RecyclerView.Adapter<RecyclerMessage.ViewHo
 
     @Override
     public int getItemCount() {
-        return messageList.size();
+        if (messageList == null) {
+            return 0;
+        }
+            return messageList.size();
     }
 
     //class
