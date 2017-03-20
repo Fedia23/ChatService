@@ -1,31 +1,40 @@
 package com.pineapple.chat.Service;
 
-import android.app.Service;
+import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
+import android.net.ConnectivityManager;
+import android.util.Log;
 
-import com.pineapple.chat.DB.Model.Message;
 import com.pineapple.chat.SocketTest;
 
-import java.util.List;
-
-public class AppService extends Service {
-
+public class AppService extends IntentService {
     private static final String TAG = "AppService";
-    
     SocketTest socketTest;
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, AppService.class);
+    }
+
+    public AppService() {
+        super(TAG);
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        socketTest = new SocketTest();
+    protected void onHandleIntent(Intent intent) {
+        if (!isNetworkAvailableAndConnected()) {
+            return;
+        }
+        Log.i(TAG, "Received an intent: " + intent);
     }
 
+    private boolean isNetworkAvailableAndConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
+        boolean isNetworkConnected = isNetworkAvailable &&
+                cm.getActiveNetworkInfo().isConnected();
+        return isNetworkConnected;
+    }
 }
