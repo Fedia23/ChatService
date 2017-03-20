@@ -35,7 +35,7 @@ public class AppService extends Service {
     public void onCreate() {
         super.onCreate();
         try {
-            socket = IO.socket("https://test-socket-dashika1992.c9users.io/");
+            socket = IO.socket("http://test-socket-dashika1992.c9users.io/");
             socket.on(Socket.EVENT_CONNECT, onConnect)
                     .on("message", onNewMessage)
                     .on(Socket.EVENT_DISCONNECT, onDisconnect)
